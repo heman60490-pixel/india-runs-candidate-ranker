@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Candidate Ranker</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+        h1 {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 160px;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 14px;
+            background: #185FA5;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #0C447C;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>AI Candidate Ranker</h1>
+        <p>Paste your Job Description — AI will find the best candidates</p>
+
+        <form method="POST" action="/rank/">
+            {% csrf_token %}
+            <textarea 
+                name="jd" 
+                placeholder="Paste Job Description here...
+Example: We need a Python Django developer with 2 years experience, SQL knowledge and REST API skills.">
+            </textarea>
+            <button type="submit">
+                Find Best Candidates →
+            </button>
+        </form>
+    </div>
+</body>
+</html>
