@@ -1,0 +1,6 @@
+candidate_id,name,resume_text,semantic_score,skills_score,experience_score,final_score,explanation,rank
+3,Ravi Sharma,Python Machine Learning engineer pandas numpy 2 years,0.0869,0.0,1.0,0.2435,Weak match,1
+5,John Doe,JavaScript React frontend developer 3 years HTML CSS,0.0543,0.0,1.0,0.2272,Weak match,2
+2,Sara Ahmed,Java Spring developer 5 years MySQL experience,0.0502,0.0,1.0,0.2251,Weak match,3
+1,Ali Khan,Python Django developer 3 years SQL REST API experience,0.0321,0.0,1.0,0.2161,Weak match,4
+4,Priya Singh,Django REST API developer Python PostgreSQL 4 years,0.0278,0.0,1.0,0.2139,Weak match,5
