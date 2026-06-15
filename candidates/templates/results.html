@@ -4,115 +4,281 @@
     <meta charset="UTF-8">
     <title>Rankings — AI Candidate Ranker</title>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: sans-serif;
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 20px;
-            background: #f5f5f5;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        .navbar {
+            background: #185FA5;
+            padding: 14px 24px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav-title { color: white; font-size: 16px; font-weight: 500; }
+        .nav-badge {
+            background: #378ADD;
+            color: white;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 900px;
+            margin: 0 auto 20px;
+        }
+        .stat {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 24px;
+            font-weight: 500;
+            color: #185FA5;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
         }
         .card {
             background: white;
-            padding: 30px;
             border-radius: 12px;
             border: 1px solid #ddd;
+            padding: 24px;
+            max-width: 900px;
+            margin: 0 auto 20px;
         }
-        h1 { font-size: 22px; margin-bottom: 6px; }
         .jd-box {
             background: #f0f4ff;
             border-left: 3px solid #185FA5;
             padding: 10px 14px;
             font-size: 13px;
             color: #333;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             border-radius: 0 8px 8px 0;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
         }
-        th {
-            background: #185FA5;
+        .results-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #222;
+        }
+        .download-btn {
+            background: #0F6E56;
             color: white;
-            padding: 10px 14px;
-            text-align: left;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
         }
-        td {
-            padding: 10px 14px;
+        .download-btn:hover { background: #085041; }
+        .candidate {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 0;
             border-bottom: 1px solid #eee;
         }
-        tr:hover td { background: #f9f9f9; }
-        .rank-1 { font-weight: 500; color: #185FA5; }
-        .score-bar {
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
+        .candidate:last-child { border-bottom: none; }
+        .rank-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #185FA5;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            flex-shrink: 0;
             margin-top: 4px;
         }
-        .score-fill {
-            height: 6px;
-            background: #185FA5;
-            border-radius: 3px;
+        .rank-badge.gold { background: #BA7517; }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #E6F1FB;
+            color: #185FA5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 500;
+            flex-shrink: 0;
         }
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #999;
+        .cand-info { flex: 1; min-width: 0; }
+        .cand-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #222;
+        }
+        .explanation {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        .skills-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .skill-tag {
+            background: #E6F1FB;
+            color: #0C447C;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .score-section {
+            text-align: right;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+        .score-num {
+            font-size: 18px;
+            font-weight: 500;
+            color: #185FA5;
+        }
+        .score-label {
+            font-size: 11px;
+            color: #aaa;
+        }
+        .bar-wrap {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 6px;
+        }
+        .bar-fill {
+            height: 4px;
+            border-radius: 2px;
+            background: #185FA5;
         }
         .back-btn {
             display: inline-block;
-            margin-top: 20px;
             background: #185FA5;
             color: white;
-            padding: 10px 22px;
+            padding: 11px 24px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 14px;
         }
+        .back-btn:hover { background: #0C447C; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Ranked Candidates</h1>
 
+    <div class="navbar">
+        <span class="nav-title">AI Candidate Ranker</span>
+        <span class="nav-badge">India Runs 2026</span>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-num">{{ total }}</div>
+            <div class="stat-label">Total Candidates</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">
+                {% if results %}
+                    {{ results.0.final_score }}
+                {% else %}0{% endif %}
+            </div>
+            <div class="stat-label">Top Score</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">{{ results|length }}</div>
+            <div class="stat-label">Showing Top</div>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <!-- JD box -->
         <div class="jd-box">
             <strong>Job Description:</strong> {{ jd }}
         </div>
 
+        <div class="results-header">
+            <span class="results-title">Ranked Candidates</span>
+
+            <!-- Download button -->
+            <form method="POST" action="/download/"
+                  style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="jd" value="{{ jd }}">
+                <button type="submit" class="download-btn">
+                    Download CSV
+                </button>
+            </form>
+        </div>
+
         {% if results %}
-        <table>
-            <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th>Final Score</th>
-                <th>Skills Match</th>
-            </tr>
-            {% for candidate in results %}
-            <tr>
-                <td class="{% if candidate.rank == 1 %}rank-1{% endif %}">
-                    #{{ candidate.rank }}
-                </td>
-                <td>{{ candidate.name }}</td>
-                <td>
-                    {{ candidate.final_score }}
-                    <div class="score-bar">
-                        <div class="score-fill"
-                             style="width: {{ candidate.final_score|floatformat:0 }}%">
+            {% for c in results %}
+            <div class="candidate">
+
+                <div class="rank-badge {% if c.rank == 1 %}gold{% endif %}">
+                    {{ c.rank }}
+                </div>
+
+                <div class="avatar">
+                    {{ c.name|slice:":2"|upper }}
+                </div>
+
+                <div class="cand-info">
+                    <div class="cand-name">{{ c.name }}</div>
+                    <div class="explanation">{{ c.explanation }}</div>
+                </div>
+
+                <div class="score-section">
+                    <div class="score-num">{{ c.final_score }}</div>
+                    <div class="score-label">final score</div>
+                    <div class="bar-wrap">
+                        <div class="bar-fill"
+                            style="width: {% widthratio c.final_score 1 100 %}%">
                         </div>
                     </div>
-                </td>
-                <td>{{ candidate.skills_score }}</td>
-            </tr>
+                </div>
+
+            </div>
             {% endfor %}
-        </table>
         {% else %}
-        <div class="empty">
-            No results yet — AI engine coming soon!
-        </div>
+            <p style="text-align:center;color:#aaa;padding:40px;">
+                No results found.
+            </p>
         {% endif %}
 
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;">
         <a href="/" class="back-btn">← New Search</a>
     </div>
+
 </body>
 </html>

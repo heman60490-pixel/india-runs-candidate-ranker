@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from .ai_engine import rank_candidates
 import pandas as pd
+import csv
 import os
 
 def index(request):
@@ -8,23 +10,59 @@ def index(request):
 
 def get_rankings(request):
     if request.method == 'POST':
-        # Step 1: User ki JD lo
         jd = request.POST.get('jd', '')
 
-        # Step 2: Dataset load karo
-        csv_path = os.path.join('data', 'candidates.csv')
-        df = pd.read_csv(csv_path)
+        # CSV upload check karo
+        if 'csv_file' in request.FILES:
+            csv_file = request.FILES['csv_file']
+            df = pd.read_csv(csv_file)
+        else:
+            csv_path = os.path.join('data', 'candidates.csv')
+            df = pd.read_csv(csv_path)
 
-        # Step 3: AI engine ko do — ranked list wapas aayegi
         ranked = rank_candidates(jd, df)
-
-        # Step 4: Top 10 results lo
         top10 = ranked.head(10).to_dict('records')
 
-        # Step 5: results.html ko do
         return render(request, 'results.html', {
             'results': top10,
-            'jd': jd
+            'jd': jd,
+            'total': len(ranked)
         })
+
+    return render(request, 'index.html')
+
+def download_results(request):
+    if request.method == 'POST':
+        jd = request.POST.get('jd', '')
+
+        if 'csv_file' in request.FILES:
+            df = pd.read_csv(request.FILES['csv_file'])
+        else:
+            df = pd.read_csv(os.path.join('data', 'candidates.csv'))
+
+        ranked = rank_candidates(jd, df)
+
+        # CSV download response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = \
+            'attachment; filename="ranked_candidates.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow([
+            'Rank', 'Name', 'Final Score',
+            'Semantic Score', 'Skills Score',
+            'Experience Score', 'Explanation'
+        ])
+        for _, row in ranked.iterrows():
+            writer.writerow([
+                row['rank'],
+                row['name'],
+                row['final_score'],
+                row['semantic_score'],
+                row['skills_score'],
+                row['experience_score'],
+                row['explanation']
+            ])
+        return response
 
     return render(request, 'index.html')

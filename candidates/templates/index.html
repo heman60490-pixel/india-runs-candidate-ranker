@@ -4,70 +4,134 @@
     <meta charset="UTF-8">
     <title>AI Candidate Ranker</title>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: sans-serif;
-            max-width: 700px;
-            margin: 60px auto;
-            padding: 20px;
-            background: #f5f5f5;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        .navbar {
+            background: #185FA5;
+            padding: 14px 24px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .nav-badge {
+            background: #378ADD;
+            color: white;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
         }
         .card {
             background: white;
-            padding: 30px;
             border-radius: 12px;
             border: 1px solid #ddd;
+            padding: 24px;
+            max-width: 750px;
+            margin: 0 auto 20px;
         }
-        h1 {
-            font-size: 22px;
-            margin-bottom: 6px;
+        .card-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #222;
+            margin-bottom: 14px;
         }
-        p {
+        label {
+            display: block;
+            font-size: 13px;
             color: #666;
-            font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 6px;
+            margin-top: 14px;
         }
         textarea {
             width: 100%;
-            height: 160px;
+            height: 140px;
             padding: 12px;
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 8px;
             resize: vertical;
-            box-sizing: border-box;
+            font-family: sans-serif;
         }
-        button {
-            margin-top: 14px;
+        textarea:focus {
+            outline: none;
+            border-color: #185FA5;
+        }
+        .file-input {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 13px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            color: #555;
+        }
+        .hint {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .btn {
             background: #185FA5;
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 13px 0;
             border-radius: 8px;
             font-size: 15px;
-            cursor: pointer;
             width: 100%;
+            margin-top: 18px;
+            cursor: pointer;
+            font-weight: 500;
         }
-        button:hover {
-            background: #0C447C;
-        }
+        .btn:hover { background: #0C447C; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>AI Candidate Ranker</h1>
-        <p>Paste your Job Description — AI will find the best candidates</p>
 
-        <form method="POST" action="/rank/">
+    <div class="navbar">
+        <span class="nav-title">AI Candidate Ranker</span>
+        <span class="nav-badge">India Runs 2026</span>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Find Best Candidates</div>
+
+        <form method="POST" action="/rank/"
+              enctype="multipart/form-data">
             {% csrf_token %}
-            <textarea 
-                name="jd" 
+
+            <label>Job Description *</label>
+            <textarea name="jd"
                 placeholder="Paste Job Description here...
-Example: We need a Python Django developer with 2 years experience, SQL knowledge and REST API skills.">
-            </textarea>
-            <button type="submit">
+Example: We need a Python Django developer with 2 years experience, SQL and REST API skills."
+                required></textarea>
+
+            <label>Upload Candidates CSV (optional)</label>
+            <input type="file" name="csv_file"
+                   accept=".csv" class="file-input">
+            <div class="hint">
+                Leave empty to use default dataset.
+                CSV must have: candidate_id, name, resume_text
+            </div>
+
+            <button type="submit" class="btn">
                 Find Best Candidates →
             </button>
         </form>
     </div>
+
 </body>
 </html>
