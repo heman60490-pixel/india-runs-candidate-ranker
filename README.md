@@ -56,7 +56,7 @@ Final Ranked List with Explanation
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/TUMHARA_USERNAME/india-runs-candidate-ranker.git
+git clone https://github.com/heman60490-pixel/india-runs-candidate-ranker.git
 cd india-runs-candidate-ranker
 
 # 2. Virtual environment
