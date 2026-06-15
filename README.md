@@ -1,26 +1,49 @@
 # 🇮🇳 India Runs — AI Candidate Ranker
 
-An AI-powered candidate ranking system built for the India Runs Hackathon by Redrob AI.
+An AI-powered candidate ranking system built for the **India Runs Hackathon 2026** by Redrob AI.
 
 ---
 
-## What it does
-Recruiters paste a Job Description — the AI finds and ranks 
-the best matching candidates instantly.
+## 🎯 Problem
+Recruiters receive thousands of resumes — keyword filters don't work.
+Context, skills, and experience need to be understood together.
+
+## 💡 Solution
+An intelligent ranking system that combines:
+- **Semantic understanding** — BERT embeddings match meaning, not just keywords
+- **Skills matching** — exact skill overlap between JD and resume
+- **Experience scoring** — years of experience vs requirement
+- **India-specific bonus** — recognizes Indian certifications (NPTEL, TCS iON, etc.)
+- **Explainability** — tells WHY each candidate was ranked
 
 ---
 
-## How it works
-1. Job Description is converted to embeddings using BERT model
-2. Each candidate resume is also converted to embeddings
-3. Cosine similarity is calculated between JD and resumes
-4. Skills matching score is calculated separately
-5. Final score = Semantic (60%) + Skills Match (40%)
-6. Candidates are ranked — best match first
+## 🏗️ How It Works
+Job Description
 
----
+↓
 
-## Tech Stack
+BERT Embeddings (all-MiniLM-L6-v2)
+
+↓
+
+┌─────────────────────────────────┐
+
+│ Semantic Score      → 50% weight│
+
+│ Skills Match Score  → 30% weight│
+
+│ Experience Score    → 20% weight│
+
+│ India Bonus         → +10% max  │
+
+└─────────────────────────────────┘
+
+↓
+
+Final Ranked List with Explanation
+
+## 🛠️ Tech Stack
 - Python 3.10+
 - Django 4.2
 - sentence-transformers (all-MiniLM-L6-v2)
@@ -29,37 +52,50 @@ the best matching candidates instantly.
 
 ---
 
-## Setup Instructions
+## ⚙️ Setup Instructions
+
 ```bash
 # 1. Clone the repo
 git clone https://github.com/TUMHARA_USERNAME/india-runs-candidate-ranker.git
 cd india-runs-candidate-ranker
 
-# 2. Virtual environment banao
+# 2. Virtual environment
 python -m venv venv
-venv\Scripts\activate
+venv\Scripts\activate   # Windows
+source venv/bin/activate  # Mac/Linux
 
-# 3. Dependencies install karo
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Server run karo
+# 4. Run server
 python manage.py runserver
 ```
 
-## Usage
-1. Open `http://127.0.0.1:8000`
-2. Paste any Job Description
-3. Click "Find Best Candidates"
-4. View ranked candidates with scores
+Open `http://127.0.0.1:8000` in browser.
 
 ---
 
-## Project Structure
+## 📊 Features
+
+| Feature | Description |
+|---|---|
+| Semantic Ranking | BERT-based meaning match |
+| Skills Matching | Exact skill overlap detection |
+| Experience Score | Years of experience scoring |
+| India Bonus | Indian certification recognition |
+| Explainability | Why each candidate was ranked |
+| CSV Upload | Upload your own candidate dataset |
+| Download Results | Export ranked candidates as CSV |
+| Web Interface | Clean Django-powered UI |
+
+---
+
+## 📁 Project Structure
 india_runs/
 
 ├── candidates/
 
-│   ├── ai_engine.py     ← AI ranking logic
+│   ├── ai_engine.py     ← Core AI ranking logic
 
 │   ├── views.py         ← Request handling
 
@@ -67,21 +103,41 @@ india_runs/
 
 │   └── templates/
 
-│       ├── index.html   ← Input form
+│       ├── index.html   ← JD input form
 
-│       └── results.html ← Rankings display
+│       └── results.html ← Ranked results
 
 ├── data/
 
 │   └── candidates.csv   ← Dataset
 
-└── manage.py
+├── manage.py
 
-## Results
-| Rank | Candidate | Score |
-|------|-----------|-------|
-| #1 | Best Python Django match | 0.88 |
-| #2 | Second best match | 0.77 |
+├── requirements.txt
+
+└── README.md
+
+---
+
+## 📈 Sample Results
+
+| Rank | Candidate | Final Score | Explanation |
+|---|---|---|---|
+| #1 | Ali Khan | 0.88 | Matched: python, django, sql — Strong match |
+| #2 | Priya Singh | 0.77 | Matched: django, python — Strong match |
+| #3 | Sara Ahmed | 0.30 | Matched: sql — Weak match |
+
+---
+
+## 🧠 Scoring Formula
+Final Score =
+
+Semantic Similarity × 0.50
+
+Skills Match      × 0.30
+Experience Score  × 0.20
+India Bonus       × 0.10
+
 
 ---
 
