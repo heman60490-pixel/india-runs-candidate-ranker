@@ -69,8 +69,29 @@
             padding: 10px 14px;
             font-size: 13px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             border-radius: 0 8px 8px 0;
+        }
+        .jd-analysis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .jd-box-item {
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .jd-box-label {
+            font-size: 11px;
+            color: #888;
+        }
+        .jd-box-value {
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 4px;
+            text-transform: capitalize;
         }
         .results-header {
             display: flex;
@@ -141,15 +162,13 @@
             margin-top: 4px;
             line-height: 1.5;
         }
-        .skills-row {
+        .signal-row {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
             margin-top: 6px;
         }
-        .skill-tag {
-            background: #E6F1FB;
-            color: #0C447C;
+        .signal-tag {
             font-size: 11px;
             padding: 2px 8px;
             border-radius: 10px;
@@ -198,7 +217,7 @@
         <span class="nav-badge">India Runs 2026</span>
     </div>
 
-    <!-- Stats Cards -->
+    <!-- Stats -->
     <div class="stats">
         <div class="stat">
             <div class="stat-num">{{ total }}</div>
@@ -206,9 +225,7 @@
         </div>
         <div class="stat">
             <div class="stat-num">
-                {% if results %}
-                    {{ results.0.final_score }}
-                {% else %}0{% endif %}
+                {% if results %}{{ results.0.final_score }}{% else %}0{% endif %}
             </div>
             <div class="stat-label">Top Score</div>
         </div>
@@ -220,17 +237,43 @@
 
     <div class="card">
 
-        <!-- JD box -->
+        <!-- JD Box -->
         <div class="jd-box">
             <strong>Job Description:</strong> {{ jd }}
         </div>
 
+        <!-- JD Analysis -->
+        <div class="jd-analysis">
+            <div class="jd-box-item" style="background:#f0f4ff;">
+                <div class="jd-box-label">Role Level</div>
+                <div class="jd-box-value" style="color:#185FA5;">
+                    {{ jd_info.role_level }}
+                </div>
+            </div>
+            <div class="jd-box-item" style="background:#f0fff4;">
+                <div class="jd-box-label">Domain</div>
+                <div class="jd-box-value" style="color:#3B6D11;">
+                    {{ jd_info.domain }}
+                </div>
+            </div>
+            <div class="jd-box-item" style="background:#fff8f0;">
+                <div class="jd-box-label">Skills Required</div>
+                <div class="jd-box-value" style="color:#854F0B;">
+                    {{ jd_info.skill_count }}
+                </div>
+            </div>
+            <div class="jd-box-item" style="background:#fdf0ff;">
+                <div class="jd-box-label">Exp Required</div>
+                <div class="jd-box-value" style="color:#3C3489;">
+                    {{ jd_info.experience_years|floatformat:0 }} yrs
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Header -->
         <div class="results-header">
             <span class="results-title">Ranked Candidates</span>
-
-            <!-- Download button -->
-            <form method="POST" action="/download/"
-                  style="display:inline;">
+            <form method="POST" action="/download/" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="jd" value="{{ jd }}">
                 <button type="submit" class="download-btn">
@@ -239,6 +282,7 @@
             </form>
         </div>
 
+        <!-- Candidates List -->
         {% if results %}
             {% for c in results %}
             <div class="candidate">
@@ -254,6 +298,24 @@
                 <div class="cand-info">
                     <div class="cand-name">{{ c.name }}</div>
                     <div class="explanation">{{ c.explanation }}</div>
+                    <div class="signal-row">
+                        <span class="signal-tag"
+                            style="background:#E6F1FB;color:#0C447C;">
+                            Semantic: {{ c.semantic_score }}
+                        </span>
+                        <span class="signal-tag"
+                            style="background:#EAF3DE;color:#3B6D11;">
+                            Skills: {{ c.skills_score }}
+                        </span>
+                        <span class="signal-tag"
+                            style="background:#FAEEDA;color:#854F0B;">
+                            Exp: {{ c.experience_score }}
+                        </span>
+                        <span class="signal-tag"
+                            style="background:#EEEDFE;color:#3C3489;">
+                            Behavioral: {{ c.behavioral_score }}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="score-section">
@@ -261,7 +323,7 @@
                     <div class="score-label">final score</div>
                     <div class="bar-wrap">
                         <div class="bar-fill"
-                            style="width: {% widthratio c.final_score 1 100 %}%">
+                            style="width:{% widthratio c.final_score 1 100 %}%">
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,19 @@ INDIAN_CERTS = [
     'tcs ion', 'wipro talentpro', 'nasscom'
 ]
 
+ROLE_LEVELS = {
+    'junior': ['junior', 'entry level', 'fresher', 'trainee', '0-1 year', '1 year'],
+    'mid': ['mid', 'intermediate', '2-3 years', '2 years', '3 years'],
+    'senior': ['senior', 'lead', 'principal', 'architect', '5+ years', '4 years', '5 years'],
+}
+
+DOMAINS = {
+    'backend': ['django', 'flask', 'fastapi', 'nodejs', 'spring', 'rest api', 'postgresql', 'mongodb'],
+    'frontend': ['react', 'javascript', 'html', 'css', 'vue', 'angular'],
+    'ml': ['machine learning', 'deep learning', 'pandas', 'numpy', 'tensorflow', 'pytorch'],
+    'devops': ['docker', 'aws', 'kubernetes', 'ci/cd', 'jenkins'],
+}
+
 def extract_skills(text):
     skills_list = [
         'python', 'django', 'javascript', 'react', 'sql',
@@ -43,16 +56,6 @@ def india_bonus(resume_text):
     return min(bonus, 0.10)
 
 def behavioral_score(row):
-    """
-    3 signals se score nikalo:
-    1. last_active_days — kam din = zyada active = better
-    2. profile_score — 0 to 100
-    3. applications_count — zyada apply = serious candidate
-    """
-    score = 0.0
-
-    # Signal 1: Activity score
-    # 0-7 din = 1.0, 8-30 din = 0.7, 31-90 = 0.4, 90+ = 0.1
     days = row.get('last_active_days', 999)
     if days <= 7:
         activity = 1.0
@@ -63,12 +66,8 @@ def behavioral_score(row):
     else:
         activity = 0.1
 
-    # Signal 2: Profile completeness
-    # 0-100 score ko 0-1 mein convert karo
     profile = row.get('profile_score', 0) / 100
 
-    # Signal 3: Applications — serious candidate
-    # 10+ applications = full score
     apps = row.get('applications_count', 0)
     if apps >= 10:
         app_score = 1.0
@@ -79,9 +78,25 @@ def behavioral_score(row):
     else:
         app_score = 0.1
 
-    # Teeno ko milao
     score = (activity * 0.40) + (profile * 0.35) + (app_score * 0.25)
     return round(score, 4)
+
+def detect_level(jd_text):
+    text_lower = jd_text.lower()
+    for level, keywords in ROLE_LEVELS.items():
+        for kw in keywords:
+            if kw in text_lower:
+                return level
+    return 'mid'
+
+def detect_domain(jd_text):
+    text_lower = jd_text.lower()
+    domain_scores = {}
+    for domain, keywords in DOMAINS.items():
+        score = sum(1 for kw in keywords if kw in text_lower)
+        domain_scores[domain] = score
+    best = max(domain_scores, key=domain_scores.get)
+    return best if domain_scores[best] > 0 else 'general'
 
 def explain_ranking(jd_text, resume_text, score):
     jd_skills = extract_skills(jd_text)
@@ -103,39 +118,44 @@ def explain_ranking(jd_text, resume_text, score):
 
     return " | ".join(reasons)
 
+def parse_jd(jd_text):
+    return {
+        'required_skills': list(extract_skills(jd_text)),
+        'experience_years': experience_score(jd_text) * 2,
+        'role_level': detect_level(jd_text),
+        'domain': detect_domain(jd_text),
+        'skill_count': len(extract_skills(jd_text))
+    }
+
 def rank_candidates(job_description, candidates_df):
 
-    # Step 1: Embeddings
+    jd_analysis = parse_jd(job_description)
+    print(f"JD Analysis: {jd_analysis}")
+
     jd_embedding = model.encode([job_description])
     resume_texts = candidates_df['resume_text'].fillna('').tolist()
     resume_embeddings = model.encode(resume_texts)
 
-    # Step 2: Semantic similarity
     semantic_scores = cosine_similarity(
         jd_embedding, resume_embeddings
     )[0]
 
-    # Step 3: Skills match
     skill_scores = candidates_df['resume_text'].apply(
         lambda r: skills_score(job_description, str(r))
     )
 
-    # Step 4: Experience score
     exp_scores = candidates_df['resume_text'].apply(
         lambda r: experience_score(str(r))
     )
 
-    # Step 5: India bonus
     bonus_scores = candidates_df['resume_text'].apply(
         lambda r: india_bonus(str(r))
     )
 
-    # Step 6: Behavioral score — NAYA!
     behavioral_scores = candidates_df.apply(
         lambda row: behavioral_score(row), axis=1
     )
 
-    # Step 7: Final score — sab milao
     candidates_df = candidates_df.copy()
     candidates_df['semantic_score'] = semantic_scores.round(4)
     candidates_df['skills_score'] = skill_scores.round(4)
@@ -143,13 +163,12 @@ def rank_candidates(job_description, candidates_df):
     candidates_df['behavioral_score'] = behavioral_scores.round(4)
 
     candidates_df['final_score'] = (
-        semantic_scores  * 0.40 +  # 40% — AI similarity
-        skill_scores     * 0.25 +  # 25% — Skills match
-        exp_scores       * 0.15 +  # 15% — Experience
-        behavioral_scores * 0.20   # 20% — Behavioral ← NAYA
+        semantic_scores   * 0.40 +
+        skill_scores      * 0.25 +
+        exp_scores        * 0.15 +
+        behavioral_scores * 0.20
     ).round(4)
 
-    # Step 8: Explanation
     candidates_df['explanation'] = candidates_df.apply(
         lambda row: explain_ranking(
             job_description,
@@ -158,7 +177,6 @@ def rank_candidates(job_description, candidates_df):
         ), axis=1
     )
 
-    # Step 9: Sort aur rank
     ranked = candidates_df.sort_values(
         'final_score', ascending=False
     ).reset_index(drop=True)

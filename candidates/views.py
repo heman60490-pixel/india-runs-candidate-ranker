@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .ai_engine import rank_candidates
+from .ai_engine import rank_candidates, parse_jd
 import pandas as pd
 import csv
 import os
@@ -12,21 +12,20 @@ def get_rankings(request):
     if request.method == 'POST':
         jd = request.POST.get('jd', '')
 
-        # CSV upload check karo
         if 'csv_file' in request.FILES:
-            csv_file = request.FILES['csv_file']
-            df = pd.read_csv(csv_file)
+            df = pd.read_csv(request.FILES['csv_file'])
         else:
-            csv_path = os.path.join('data', 'candidates.csv')
-            df = pd.read_csv(csv_path)
+            df = pd.read_csv(os.path.join('data', 'candidates.csv'))
 
         ranked = rank_candidates(jd, df)
+        jd_info = parse_jd(jd)
         top10 = ranked.head(10).to_dict('records')
 
         return render(request, 'results.html', {
             'results': top10,
             'jd': jd,
-            'total': len(ranked)
+            'total': len(ranked),
+            'jd_info': jd_info
         })
 
     return render(request, 'index.html')
@@ -42,7 +41,6 @@ def download_results(request):
 
         ranked = rank_candidates(jd, df)
 
-        # CSV download response
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = \
             'attachment; filename="ranked_candidates.csv"'
@@ -51,7 +49,8 @@ def download_results(request):
         writer.writerow([
             'Rank', 'Name', 'Final Score',
             'Semantic Score', 'Skills Score',
-            'Experience Score', 'Explanation'
+            'Experience Score', 'Behavioral Score',
+            'Explanation'
         ])
         for _, row in ranked.iterrows():
             writer.writerow([
@@ -61,6 +60,7 @@ def download_results(request):
                 row['semantic_score'],
                 row['skills_score'],
                 row['experience_score'],
+                row['behavioral_score'],
                 row['explanation']
             ])
         return response
