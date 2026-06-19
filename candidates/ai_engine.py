@@ -39,6 +39,28 @@ SKILLS_LIST = [
     'spring', 'mysql', 'redis', 'celery', 'git'
 ]
 
+# Hinglish skill mappings
+HINGLISH_SKILLS = {
+    'paython': 'python',
+    'pyton': 'python',
+    'jango': 'django',
+    'jeva': 'java',
+    'deta base': 'sql',
+    'databse': 'sql',
+    'databas': 'sql',
+    'reeact': 'react',
+    'java script': 'javascript',
+}
+
+# Hinglish experience patterns
+HINGLISH_EXP_PATTERNS = [
+    r'(\d+)\s*saal',
+    r'(\d+)\s*varsh',
+    r'(\d+)\s*sal\b',
+    r'(\d+)\s*year',
+    r'(\d+)\s*yr',
+]
+
 # Education levels
 EDUCATION_LEVELS = {
     'phd': ['phd', 'doctorate', 'ph.d'],
@@ -48,49 +70,91 @@ EDUCATION_LEVELS = {
 }
 
 # ================================
+# HINGLISH NORMALIZER
+# ================================
+
+def normalize_hinglish(text):
+    """
+    Hinglish text ko normalize karo
+    Taaki skills detect ho sakein
+    """
+    text_lower = text.lower()
+
+    replacements = {
+        'aur': 'and',
+        'ka kaam': 'developer',
+        'karta hoon': 'working',
+        'karta tha': 'worked',
+        'ke saath': 'with',
+        'mein kaam': 'experience in',
+        'saal ka': 'years of',
+        'saal se': 'years of experience',
+        'varsh ka': 'years of',
+        'main': 'i',
+        'hoon': 'am',
+        'tha': 'was',
+        'hai': 'is',
+        'chahiye': 'required',
+        'zaruri': 'required',
+        'achha hoga': 'good to have',
+        'ho to better': 'good to have',
+    }
+
+    for hindi, english in replacements.items():
+        text_lower = text_lower.replace(hindi, english)
+
+    for wrong, correct in HINGLISH_SKILLS.items():
+        text_lower = text_lower.replace(wrong, correct)
+
+    return text_lower
+
+# ================================
 # SKILL FUNCTIONS
 # ================================
 
 def extract_skills(text):
-    """Text mein se skills nikalo"""
-    text_lower = text.lower()
-    return set(s for s in SKILLS_LIST if s in text_lower)
+    """
+    Text mein se skills nikalo
+    English + Hinglish dono handle karta hai
+    """
+    normalized = normalize_hinglish(text)
+    return set(s for s in SKILLS_LIST if s in normalized)
 
 def extract_skills_weighted(jd_text):
     """
     JD mein se required aur optional skills alag detect karo
-    Required skills = 1.0 weight
-    Nice to have skills = 0.5 weight
+    Required = 1.0, Nice to have = 0.5
     """
-    text_lower = jd_text.lower()
+    # Hinglish normalize karo pehle
+    normalized_jd = normalize_hinglish(jd_text)
 
     required_patterns = [
         'required', 'must have', 'must-have',
-        'mandatory', 'essential', 'need', 'needed'
+        'mandatory', 'essential', 'need', 'needed',
+        'chahiye', 'zaruri'
     ]
     optional_patterns = [
         'good to have', 'nice to have', 'preferred',
         'bonus', 'optional', 'plus', 'advantage',
-        'beneficial', 'desirable'
+        'beneficial', 'desirable', 'achha hoga',
+        'ho to better'
     ]
 
     all_skills = list(extract_skills(jd_text))
     weighted_skills = {}
 
     for skill in all_skills:
-        skill_pos = text_lower.find(skill)
+        skill_pos = normalized_jd.find(skill)
         if skill_pos == -1:
             weighted_skills[skill] = 1.0
             continue
 
-        context = text_lower[max(0, skill_pos-100):skill_pos]
+        context = normalized_jd[max(0, skill_pos-100):skill_pos]
         is_optional = any(pat in context for pat in optional_patterns)
         is_required = any(pat in context for pat in required_patterns)
 
         if is_optional:
             weighted_skills[skill] = 0.5
-        elif is_required:
-            weighted_skills[skill] = 1.0
         else:
             weighted_skills[skill] = 1.0
 
@@ -128,10 +192,20 @@ def skills_score_weighted(jd_text, resume_text):
 # ================================
 
 def experience_score(resume_text, required_years=2):
-    """Resume mein se experience years nikalo"""
-    numbers = re.findall(r'\b(\d+)\s*year', resume_text.lower())
-    if numbers:
-        found_years = max(int(n) for n in numbers)
+    """
+    Resume mein se experience nikalo
+    English + Hinglish dono support karta hai
+    3 year, 3 saal, 3 varsh — sab detect hoga
+    """
+    text_lower = resume_text.lower()
+    all_years = []
+
+    for pattern in HINGLISH_EXP_PATTERNS:
+        matches = re.findall(pattern, text_lower)
+        all_years.extend([int(m) for m in matches])
+
+    if all_years:
+        found_years = max(all_years)
         return min(found_years / required_years, 1.0)
     return 0.0
 
@@ -161,37 +235,22 @@ def detect_education(resume_text):
     return 'none', scores['none']
 
 def detect_career_gaps(resume_text):
-    """
-    Resume mein career gaps detect karo
-    Gap = score kam hoga
-    """
+    """Career gaps detect karo"""
     text_lower = resume_text.lower()
-
-    # Gap keywords
-    gap_keywords = ['gap', 'break', 'career break', 'sabbatical', 'unemployed']
+    gap_keywords = ['gap', 'break', 'career break',
+                   'sabbatical', 'unemployed']
     has_gap = any(kw in text_lower for kw in gap_keywords)
-
-    if has_gap:
-        return 0.6  # gap hai toh thoda kam score
-    return 1.0      # no gap = full score
+    return 0.6 if has_gap else 1.0
 
 def detect_job_switches(resume_text):
-    """
-    Kitni companies mein kaam kiya — detect karo
-    Bahut zyada switches = unstable candidate
-    """
+    """Kitni companies mein kaam kiya"""
     text_lower = resume_text.lower()
-
-    # Company keywords
-    company_keywords = ['pvt ltd', 'private limited', 'technologies',
-                       'solutions', 'systems', 'infotech', 'software',
-                       'ltd', 'inc', 'corp']
-
+    company_keywords = [
+        'pvt ltd', 'private limited', 'technologies',
+        'solutions', 'systems', 'infotech', 'software',
+        'ltd', 'inc', 'corp'
+    ]
     count = sum(1 for kw in company_keywords if kw in text_lower)
-
-    # 1-2 companies = stable = 1.0
-    # 3-4 companies = normal = 0.8
-    # 5+ companies = unstable = 0.6
     if count <= 2:
         return 1.0
     elif count <= 4:
@@ -200,34 +259,24 @@ def detect_job_switches(resume_text):
         return 0.6
 
 def career_metadata_score(resume_text):
-    """
-    3 career signals milake score banao:
-    1. Education level
-    2. Career gaps
-    3. Job switches
-    """
+    """3 career signals milake score banao"""
     _, edu_score = detect_education(resume_text)
     gap_score = detect_career_gaps(resume_text)
     switch_score = detect_job_switches(resume_text)
 
-    final = (
+    return round(
         edu_score    * 0.50 +
         gap_score    * 0.30 +
-        switch_score * 0.20
+        switch_score * 0.20,
+        4
     )
-    return round(final, 4)
 
 # ================================
 # BEHAVIORAL FUNCTIONS
 # ================================
 
 def behavioral_score(row):
-    """
-    3 behavioral signals:
-    1. Last active days
-    2. Profile completeness
-    3. Applications count
-    """
+    """3 behavioral signals"""
     days = row.get('last_active_days', 999)
     if days <= 7:
         activity = 1.0
@@ -250,8 +299,10 @@ def behavioral_score(row):
     else:
         app_score = 0.1
 
-    score = (activity * 0.40) + (profile * 0.35) + (app_score * 0.25)
-    return round(score, 4)
+    return round(
+        (activity * 0.40) + (profile * 0.35) + (app_score * 0.25),
+        4
+    )
 
 # ================================
 # INDIA BONUS
@@ -260,10 +311,9 @@ def behavioral_score(row):
 def india_bonus(resume_text):
     """Indian certifications ka bonus"""
     text_lower = resume_text.lower()
-    bonus = 0.0
-    for cert in INDIAN_CERTS:
-        if cert in text_lower:
-            bonus += 0.05
+    bonus = sum(
+        0.05 for cert in INDIAN_CERTS if cert in text_lower
+    )
     return min(bonus, 0.10)
 
 # ================================
@@ -272,7 +322,7 @@ def india_bonus(resume_text):
 
 def detect_level(jd_text):
     """JD mein se role level detect karo"""
-    text_lower = jd_text.lower()
+    text_lower = normalize_hinglish(jd_text)
     for level, keywords in ROLE_LEVELS.items():
         for kw in keywords:
             if kw in text_lower:
@@ -281,7 +331,7 @@ def detect_level(jd_text):
 
 def detect_domain(jd_text):
     """JD mein se domain detect karo"""
-    text_lower = jd_text.lower()
+    text_lower = normalize_hinglish(jd_text)
     domain_scores = {}
     for domain, keywords in DOMAINS.items():
         score = sum(1 for kw in keywords if kw in text_lower)
@@ -314,7 +364,6 @@ def explain_ranking(jd_text, resume_text, score):
     resume_skills = extract_skills(resume_text)
     matched = jd_skills & resume_skills
     missing = jd_skills - resume_skills
-
     edu_level, _ = detect_education(resume_text)
 
     reasons = []
@@ -334,6 +383,34 @@ def explain_ranking(jd_text, resume_text, score):
     return " | ".join(reasons)
 
 # ================================
+# SCALABILITY — BATCH PROCESSING
+# ================================
+
+def rank_candidates_batch(job_description, candidates_df,
+                          batch_size=100):
+    """
+    Large datasets ke liye batch processing
+    1000+ candidates bhi fast chalega
+    """
+    all_embeddings = []
+    resume_texts = candidates_df['resume_text'].fillna('').tolist()
+    total = len(resume_texts)
+
+    print(f"🔄 {total} candidates — batch processing shuru...")
+
+    # Batch mein embeddings banao
+    for i in range(0, total, batch_size):
+        batch = resume_texts[i:i + batch_size]
+        batch_embeddings = model.encode(
+            batch,
+            show_progress_bar=False
+        )
+        all_embeddings.extend(batch_embeddings)
+        print(f"   ✅ {min(i+batch_size, total)}/{total} processed")
+
+    return all_embeddings
+
+# ================================
 # MAIN RANKING FUNCTION
 # ================================
 
@@ -341,61 +418,74 @@ def rank_candidates(job_description, candidates_df):
     """
     Main function — JD aur candidates ka dataframe lo
     Ranked dataframe wapas do
+    Large datasets ke liye batch processing use karta hai
     """
-    # JD parse karo
     jd_analysis = parse_jd(job_description)
     print(f"📋 JD Analysis: {jd_analysis}")
-    print(f"🔄 {len(candidates_df)} candidates process ho rahe hain...")
 
-    # Step 1: Embeddings
+    total = len(candidates_df)
+    print(f"🔄 {total} candidates process ho rahe hain...")
+
+    # Step 1: JD embedding
     jd_embedding = model.encode([job_description])
-    resume_texts = candidates_df['resume_text'].fillna('').tolist()
-    resume_embeddings = model.encode(resume_texts)
 
-    # Step 2: Semantic similarity
+    # Step 2: Resume embeddings — batch processing
+    if total > 50:
+        # Large dataset — batch mein process karo
+        resume_embeddings = rank_candidates_batch(
+            job_description, candidates_df
+        )
+        import numpy as np
+        resume_embeddings = np.array(resume_embeddings)
+    else:
+        # Small dataset — seedha process karo
+        resume_texts = candidates_df['resume_text'].fillna('').tolist()
+        resume_embeddings = model.encode(resume_texts)
+
+    # Step 3: Semantic similarity
     semantic_scores = cosine_similarity(
         jd_embedding, resume_embeddings
     )[0]
 
-    # Step 3: Weighted skills score
+    # Step 4: Weighted skills score
     skill_scores = candidates_df['resume_text'].apply(
         lambda r: skills_score_weighted(job_description, str(r))
     )
 
-    # Step 4: Experience score
+    # Step 5: Experience score — Hinglish support
     exp_scores = candidates_df['resume_text'].apply(
         lambda r: experience_score(str(r))
     )
 
-    # Step 5: Behavioral score
+    # Step 6: Behavioral score
     behavioral_scores = candidates_df.apply(
         lambda row: behavioral_score(row), axis=1
     )
 
-    # Step 6: Career metadata score
+    # Step 7: Career metadata score
     career_scores = candidates_df['resume_text'].apply(
         lambda r: career_metadata_score(str(r))
     )
 
-    # Step 7: India bonus
+    # Step 8: India bonus
     bonus_scores = candidates_df['resume_text'].apply(
         lambda r: india_bonus(str(r))
     )
 
-    # Step 8: Final weighted score
+    # Step 9: Final weighted score
     candidates_df = candidates_df.copy()
-    candidates_df['semantic_score']  = semantic_scores.round(4)
-    candidates_df['skills_score']    = skill_scores.round(4)
+    candidates_df['semantic_score']   = semantic_scores.round(4)
+    candidates_df['skills_score']     = skill_scores.round(4)
     candidates_df['experience_score'] = exp_scores.round(4)
     candidates_df['behavioral_score'] = behavioral_scores.round(4)
-    candidates_df['career_score']    = career_scores.round(4)
+    candidates_df['career_score']     = career_scores.round(4)
 
     candidates_df['final_score'] = (
-        semantic_scores   * 0.35 +  # 35% — AI similarity
-        skill_scores      * 0.25 +  # 25% — Weighted skills
-        exp_scores        * 0.15 +  # 15% — Experience
-        behavioral_scores * 0.15 +  # 15% — Behavioral
-        career_scores     * 0.10    # 10% — Career metadata
+        semantic_scores   * 0.35 +
+        skill_scores      * 0.25 +
+        exp_scores        * 0.15 +
+        behavioral_scores * 0.15 +
+        career_scores     * 0.10
     ).round(4)
 
     # India bonus add karo
@@ -403,7 +493,7 @@ def rank_candidates(job_description, candidates_df):
         candidates_df['final_score'] + bonus_scores
     ).round(4)
 
-    # Step 9: Explanation
+    # Step 10: Explanation
     candidates_df['explanation'] = candidates_df.apply(
         lambda row: explain_ranking(
             job_description,
@@ -412,11 +502,11 @@ def rank_candidates(job_description, candidates_df):
         ), axis=1
     )
 
-    # Step 10: Sort aur rank
+    # Step 11: Sort aur rank
     ranked = candidates_df.sort_values(
         'final_score', ascending=False
     ).reset_index(drop=True)
     ranked['rank'] = range(1, len(ranked) + 1)
 
-    print(f"✅ Ranking complete! Top candidate score: {ranked.iloc[0]['final_score']}")
+    print(f"✅ Ranking complete! Top: {ranked.iloc[0]['final_score']}")
     return ranked
