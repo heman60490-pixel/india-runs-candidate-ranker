@@ -2,65 +2,274 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Candidate Ranker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Candidate Ranker — India Runs 2026</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: #f0f4f8;
-            min-height: 100vh;
-            padding: 30px 20px;
+            color: #222;
         }
+
+        /* NAVBAR */
         .navbar {
             background: #185FA5;
-            padding: 14px 24px;
-            border-radius: 10px;
+            padding: 14px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
-        .nav-title { color: white; font-size: 16px; font-weight: 500; }
-        .nav-badge {
-            background: #378ADD;
+        .nav-logo {
             color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .nav-logo span {
+            background: #378ADD;
             font-size: 11px;
             padding: 3px 10px;
             border-radius: 20px;
+            margin-left: 10px;
+            font-weight: 400;
+            vertical-align: middle;
         }
-        .card {
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .nav-links a:hover { color: white; }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #185FA5 0%, #0C447C 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .hero h1 span { color: #7DC4FF; }
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+        .hero-btn {
+            display: inline-block;
+            background: white;
+            color: #185FA5;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .hero-btn:hover { transform: translateY(-2px); }
+
+        /* STATS */
+        .stats {
+            background: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            border-bottom: 1px solid #eee;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-size: 28px;
+            font-weight: 700;
+            color: #185FA5;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* FEATURES */
+        .features {
+            padding: 60px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .section-sub {
+            text-align: center;
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .feature-card {
             background: white;
             border-radius: 12px;
-            border: 1px solid #ddd;
             padding: 24px;
-            max-width: 750px;
-            margin: 0 auto 20px;
+            border: 1px solid #e8edf2;
+            transition: box-shadow 0.2s;
         }
-        .card-title {
-            font-size: 15px;
-            font-weight: 500;
-            color: #222;
+        .feature-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
             margin-bottom: 14px;
+        }
+        .feature-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .how {
+            background: white;
+            padding: 60px 40px;
+        }
+        .how-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 40px;
+            position: relative;
+        }
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 22px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #E6F1FB;
+        }
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        .step-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #185FA5;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .step-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
+        }
+        .step-desc {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+            padding: 0 8px;
+        }
+
+        /* FORM SECTION */
+        .form-section {
+            padding: 60px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            border: 1px solid #e8edf2;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .form-sub {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 24px;
         }
         label {
             display: block;
             font-size: 13px;
-            color: #666;
+            font-weight: 500;
+            color: #444;
             margin-bottom: 6px;
-            margin-top: 14px;
+            margin-top: 18px;
         }
         textarea {
             width: 100%;
-            height: 140px;
-            padding: 12px;
+            height: 150px;
+            padding: 14px;
             font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
             resize: vertical;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            transition: border 0.2s;
         }
         textarea:focus {
             outline: none;
@@ -68,49 +277,54 @@
         }
         .file-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px;
             font-size: 13px;
-            border: 1px dashed #ddd;
-            border-radius: 8px;
+            border: 1.5px dashed #ddd;
+            border-radius: 10px;
             background: #f9f9f9;
-            color: #555;
+            color: #666;
         }
         .hint {
             font-size: 12px;
             color: #aaa;
-            margin-top: 4px;
+            margin-top: 5px;
         }
-        .btn {
+        .submit-btn {
             background: #185FA5;
             color: white;
             border: none;
-            padding: 13px 0;
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 15px 0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
             width: 100%;
-            margin-top: 18px;
+            margin-top: 24px;
             cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.3px;
         }
-        .btn:hover { background: #0C447C; }
-        .btn:disabled {
+        .submit-btn:hover {
+            background: #0C447C;
+            transform: translateY(-1px);
+        }
+        .submit-btn:disabled {
             background: #aaa;
             cursor: not-allowed;
+            transform: none;
         }
 
-        /* Error box */
+        /* ERROR */
         .error-box {
             background: #FCEBEB;
             border-left: 3px solid #A32D2D;
-            padding: 10px 14px;
+            padding: 12px 16px;
             font-size: 13px;
             color: #A32D2D;
             border-radius: 0 8px 8px 0;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        /* Loading indicator */
+        /* LOADING */
         .loading {
             display: none;
             text-align: center;
@@ -118,10 +332,10 @@
             color: #185FA5;
             font-size: 14px;
         }
-        .loading-spinner {
+        .spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 2px solid #ddd;
             border-top: 2px solid #185FA5;
             border-radius: 50%;
@@ -129,26 +343,142 @@
             margin-right: 8px;
             vertical-align: middle;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* FOOTER */
+        .footer {
+            background: #0C447C;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
         }
+        .footer span { color: white; }
+
+        /* ANCHOR */
+        #try-now { scroll-margin-top: 70px; }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <span class="nav-title">AI Candidate Ranker</span>
-        <span class="nav-badge">India Runs 2026</span>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-logo">
+        🤖 AI Candidate Ranker
+        <span>India Runs 2026</span>
     </div>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#try-now">Try Now</a>
+    </div>
+</nav>
 
-    <div class="card">
-        <div class="card-title">Find Best Candidates</div>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">🇮🇳 Built for India Runs Hackathon 2026</div>
+    <h1>Find the <span>Best Candidates</span><br>with AI Power</h1>
+    <p>Paste a Job Description — our AI ranks candidates using semantic understanding, skills matching, experience, and behavioral signals.</p>
+    <a href="#try-now" class="hero-btn">Try It Now →</a>
+</section>
 
-        <!-- Error message -->
-        {% if error %}
-        <div class="error-box">
-            ⚠️ {{ error }}
+<!-- STATS -->
+<div class="stats">
+    <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">AI Signals Used</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">BERT</div>
+        <div class="stat-label">Model Used</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">6/6</div>
+        <div class="stat-label">Unit Tests Passing</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">&lt;10s</div>
+        <div class="stat-label">Ranking Time</div>
+    </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+    <div class="section-title">Why AI Candidate Ranker?</div>
+    <div class="section-sub">5 intelligent signals work together to find the perfect candidate</div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#E6F1FB;">🧠</div>
+            <div class="feature-title">Semantic Understanding</div>
+            <div class="feature-desc">BERT embeddings understand meaning — not just keywords. "Django developer" matches "web framework engineer".</div>
         </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#EAF3DE;">🛠️</div>
+            <div class="feature-title">Skills Matching</div>
+            <div class="feature-desc">Exact skill overlap detection between Job Description and candidate resume. Python, Django, SQL — all tracked.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#FAEEDA;">📅</div>
+            <div class="feature-title">Experience Scoring</div>
+            <div class="feature-desc">Years of experience automatically detected and compared against job requirements. Fair and accurate.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#EEEDFE;">📊</div>
+            <div class="feature-title">Behavioral Signals</div>
+            <div class="feature-desc">Active candidates rank higher. Profile completeness, last active date, and application count all considered.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#E6F8F3;">🇮🇳</div>
+            <div class="feature-title">India Bonus</div>
+            <div class="feature-desc">Recognizes Indian certifications — NPTEL, TCS iON, Infosys Springboard, Coursera — giving local talent fair credit.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background:#FCEBEB;">🔍</div>
+            <div class="feature-title">Explainability</div>
+            <div class="feature-desc">Every ranking comes with an explanation — matched skills, missing skills, and match strength. No black box.</div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how-it-works">
+    <div class="how-inner">
+        <div class="section-title">How It Works</div>
+        <div class="section-sub">4 simple steps to find your best candidate</div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-circle">1</div>
+                <div class="step-title">Paste JD</div>
+                <div class="step-desc">Enter your Job Description in the form below</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">2</div>
+                <div class="step-title">Upload CSV</div>
+                <div class="step-desc">Upload your candidates dataset or use default</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">3</div>
+                <div class="step-title">AI Ranks</div>
+                <div class="step-desc">BERT + 5 signals rank all candidates instantly</div>
+            </div>
+            <div class="step">
+                <div class="step-circle">4</div>
+                <div class="step-title">Get Results</div>
+                <div class="step-desc">Download ranked CSV or view results online</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="try-now">
+    <div class="form-card">
+        <div class="form-title">🔍 Find Best Candidates</div>
+        <div class="form-sub">Paste your Job Description below — AI will rank the best matches instantly</div>
+
+        {% if error %}
+        <div class="error-box">⚠️ {{ error }}</div>
         {% endif %}
 
         <form method="POST" action="/rank/"
@@ -157,42 +487,42 @@
             {% csrf_token %}
 
             <label>Job Description *</label>
-            <textarea name="jd"
-                id="jd"
-                placeholder="Paste Job Description here...
-Example: We need a Senior Python Django developer with 3 years experience, SQL and REST API skills."
+            <textarea name="jd" id="jd"
+                placeholder="Example: We need a Senior Python Django developer with 3 years experience, SQL knowledge and REST API skills."
                 required>{% if request.POST.jd %}{{ request.POST.jd }}{% endif %}</textarea>
 
-            <label>Upload Candidates CSV (optional)</label>
-            <input type="file" name="csv_file"
-                   accept=".csv" class="file-input">
-            <div class="hint">
-                Leave empty to use default dataset.
-                CSV must have columns: candidate_id, name, resume_text
-            </div>
+            <label>Upload Candidates CSV <span style="color:#aaa;font-weight:400">(optional)</span></label>
+            <input type="file" name="csv_file" accept=".csv" class="file-input">
+            <div class="hint">Leave empty to use default dataset. CSV must have: candidate_id, name, resume_text, last_active_days, profile_score, applications_count</div>
 
-            <button type="submit" class="btn" id="submitBtn">
+            <button type="submit" class="submit-btn" id="submitBtn">
                 Find Best Candidates →
             </button>
 
-            <!-- Loading indicator -->
             <div class="loading" id="loadingDiv">
-                <span class="loading-spinner"></span>
+                <span class="spinner"></span>
                 AI is ranking candidates... please wait (5-10 seconds)
             </div>
         </form>
     </div>
+</section>
 
-    <script>
-        document.getElementById('rankForm').addEventListener('submit', function() {
-            var jd = document.getElementById('jd').value.trim();
-            if (jd.length > 0) {
-                document.getElementById('loadingDiv').style.display = 'block';
-                document.getElementById('submitBtn').disabled = true;
-                document.getElementById('submitBtn').innerText = 'Processing...';
-            }
-        });
-    </script>
+<!-- FOOTER -->
+<footer class="footer">
+    Built with ❤️ for <span>India Runs Hackathon 2026</span> by Redrob AI |
+    <span>AI Candidate Ranker</span>
+</footer>
+
+<script>
+    document.getElementById('rankForm').addEventListener('submit', function() {
+        var jd = document.getElementById('jd').value.trim();
+        if (jd.length > 0) {
+            document.getElementById('loadingDiv').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerText = 'Processing...';
+        }
+    });
+</script>
 
 </body>
 </html>
