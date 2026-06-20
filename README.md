@@ -273,6 +273,10 @@ india_runs/
 
 ---
 
+## ⚡ Scalability Test
+
+Tested with **150 synthetic candidates** to verify batch processing performance:
+
 ## 🎯 What Makes This Different
 
 - **Not just keyword matching** — BERT understands meaning and context
