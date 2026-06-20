@@ -1,0 +1,151 @@
+candidate_id,name,resume_text,last_active_days,profile_score,applications_count
+1,Sunita Rao 1,Django Python PostgreSQL developer 7 years Redis Celery MCA,107,55,19
+2,Karan Malhotra 2,React JavaScript frontend developer 7 years HTML CSS M.Tech,41,96,13
+3,Sunita Rao 3,Java Spring Boot developer 2 years MySQL Microservices B.Tech,142,77,16
+4,Rahul Sharma 4,Java Python developer 4 years SQL Docker Kubernetes AWS M.Tech,20,97,9
+5,Nikhil Bose 5,Machine Learning engineer 4 years Python TensorFlow Pandas BCA,77,46,10
+6,Sneha Gupta 6,Django REST API Python developer 2 years MySQL HTML CSS B.Tech,132,92,4
+7,Arjun Reddy 7,Java Spring Boot developer 8 years MySQL Microservices B.Tech,147,91,15
+8,Sunita Rao 8,Python Data Science 8 years Pandas NumPy Matplotlib B.Tech,132,76,18
+9,Rohan Joshi 9,Python Flask MongoDB developer 6 years Docker AWS B.Tech,124,62,14
+10,Vikram Singh 10,Python Data Science 6 years Pandas NumPy Matplotlib B.Tech,72,49,16
+11,Kavya Iyer 11,Django Python PostgreSQL developer 1 years Redis Celery MCA,123,71,20
+12,Nikhil Bose 12,JavaScript React Node.js developer 1 years MongoDB B.Sc,47,71,2
+13,Priya Patel 13,JavaScript React Node.js developer 4 years MongoDB B.Sc,167,69,8
+14,Divya Krishnan 14,Java Spring Boot developer 7 years MySQL Microservices B.Tech,80,48,1
+15,Divya Krishnan 15,React JavaScript frontend developer 8 years HTML CSS M.Tech,5,72,19
+16,Vikram Singh 16,Django Python PostgreSQL developer 7 years Redis Celery MCA,13,90,11
+17,Priya Patel 17,Django Python PostgreSQL developer 7 years Redis Celery MCA,92,84,18
+18,Mohammed Ali 18,Django REST API Python developer 7 years MySQL HTML CSS B.Tech,169,44,6
+19,Arjun Reddy 19,Java Spring Boot developer 4 years MySQL Microservices B.Tech,124,77,18
+20,Rohan Joshi 20,Java Python developer 8 years SQL Docker Kubernetes AWS M.Tech,113,62,1
+21,Mohammed Ali 21,React JavaScript frontend developer 3 years HTML CSS M.Tech,103,42,18
+22,Sunita Rao 22,React JavaScript frontend developer 7 years HTML CSS M.Tech,180,50,6
+23,Kavya Iyer 23,Python Django REST API developer 6 years SQL PostgreSQL B.Tech,118,69,10
+24,Pooja Nair 24,React JavaScript frontend developer 8 years HTML CSS M.Tech,34,83,5
+25,Shreya Shah 25,Django Python PostgreSQL developer 4 years Redis Celery MCA,33,67,11
+26,Pooja Nair 26,Java Python developer 5 years SQL Docker Kubernetes AWS M.Tech,177,91,17
+27,Amit Kumar 27,Python Data Science 3 years Pandas NumPy Matplotlib B.Tech,92,95,15
+28,Anjali Mehta 28,Machine Learning engineer 3 years Python TensorFlow Pandas BCA,157,60,16
+29,Sneha Gupta 29,Java Spring Boot developer 1 years MySQL Microservices B.Tech,55,40,7
+30,Divya Krishnan 30,Java Spring Boot developer 7 years MySQL Microservices B.Tech,24,71,3
+31,Rahul Sharma 31,Python Django REST API developer 4 years SQL PostgreSQL B.Tech,86,50,4
+32,Shreya Shah 32,React JavaScript frontend developer 3 years HTML CSS M.Tech,88,80,6
+33,Shreya Shah 33,React JavaScript frontend developer 4 years HTML CSS M.Tech,81,61,20
+34,Nikhil Bose 34,Python Django REST API developer 5 years SQL PostgreSQL B.Tech,1,55,6
+35,Sneha Gupta 35,Java Spring Boot developer 3 years MySQL Microservices B.Tech,13,90,20
+36,Rohan Joshi 36,React JavaScript frontend developer 4 years HTML CSS M.Tech,123,78,11
+37,Kavya Iyer 37,Java Python developer 1 years SQL Docker Kubernetes AWS M.Tech,133,49,7
+38,Priya Patel 38,Python Flask MongoDB developer 2 years Docker AWS B.Tech,116,77,18
+39,Vikram Singh 39,React JavaScript frontend developer 2 years HTML CSS M.Tech,94,77,12
+40,Nikhil Bose 40,Java Spring Boot developer 8 years MySQL Microservices B.Tech,76,54,9
+41,Rahul Sharma 41,Python Data Science 3 years Pandas NumPy Matplotlib B.Tech,64,57,18
+42,Sneha Gupta 42,Machine Learning engineer 5 years Python TensorFlow Pandas BCA,79,44,17
+43,Priya Patel 43,Django REST API Python developer 8 years MySQL HTML CSS B.Tech,65,83,16
+44,Arjun Reddy 44,Python Data Science 7 years Pandas NumPy Matplotlib B.Tech,139,98,9
+45,Deepak Verma 45,Machine Learning engineer 6 years Python TensorFlow Pandas BCA,159,74,15
+46,Pooja Nair 46,Java Spring Boot developer 1 years MySQL Microservices B.Tech,178,96,8
+47,Divya Krishnan 47,Django Python PostgreSQL developer 7 years Redis Celery MCA,27,75,15
+48,Nikhil Bose 48,Machine Learning engineer 4 years Python TensorFlow Pandas BCA,157,42,5
+49,Nikhil Bose 49,Machine Learning engineer 4 years Python TensorFlow Pandas BCA,79,75,8
+50,Kavya Iyer 50,Django Python PostgreSQL developer 8 years Redis Celery MCA,13,70,4
+51,Amit Kumar 51,Machine Learning engineer 3 years Python TensorFlow Pandas BCA,19,42,4
+52,Pooja Nair 52,Java Spring Boot developer 1 years MySQL Microservices B.Tech,77,93,5
+53,Suresh Menon 53,React JavaScript frontend developer 6 years HTML CSS M.Tech,73,92,20
+54,Sunita Rao 54,Python Django REST API developer 3 years SQL PostgreSQL B.Tech,93,44,7
+55,Sunita Rao 55,Java Python developer 5 years SQL Docker Kubernetes AWS M.Tech,179,85,8
+56,Ananya Das 56,Django REST API Python developer 6 years MySQL HTML CSS B.Tech,141,98,11
+57,Kavya Iyer 57,Python Flask MongoDB developer 3 years Docker AWS B.Tech,44,79,8
+58,Karan Malhotra 58,React JavaScript frontend developer 2 years HTML CSS M.Tech,162,97,6
+59,Amit Kumar 59,Django Python PostgreSQL developer 8 years Redis Celery MCA,94,56,17
+60,Rahul Sharma 60,Django Python PostgreSQL developer 6 years Redis Celery MCA,86,64,5
+61,Ritika Bansal 61,Django Python PostgreSQL developer 3 years Redis Celery MCA,116,72,14
+62,Mohammed Ali 62,Java Python developer 3 years SQL Docker Kubernetes AWS M.Tech,119,62,12
+63,Ritika Bansal 63,Python Flask MongoDB developer 1 years Docker AWS B.Tech,83,92,14
+64,Rohan Joshi 64,Machine Learning engineer 5 years Python TensorFlow Pandas BCA,46,97,19
+65,Rahul Sharma 65,Machine Learning engineer 3 years Python TensorFlow Pandas BCA,153,51,20
+66,Anjali Mehta 66,Django Python PostgreSQL developer 6 years Redis Celery MCA,63,76,7
+67,Pooja Nair 67,React JavaScript frontend developer 2 years HTML CSS M.Tech,26,89,20
+68,Nikhil Bose 68,React JavaScript frontend developer 5 years HTML CSS M.Tech,65,92,1
+69,Priya Patel 69,React JavaScript frontend developer 7 years HTML CSS M.Tech,26,51,4
+70,Anjali Mehta 70,JavaScript React Node.js developer 2 years MongoDB B.Sc,2,74,3
+71,Kavya Iyer 71,Python Data Science 7 years Pandas NumPy Matplotlib B.Tech,57,88,12
+72,Ritika Bansal 72,Python Flask MongoDB developer 4 years Docker AWS B.Tech,73,99,14
+73,Amit Kumar 73,Machine Learning engineer 1 years Python TensorFlow Pandas BCA,61,93,8
+74,Divya Krishnan 74,Django REST API Python developer 2 years MySQL HTML CSS B.Tech,161,95,18
+75,Shreya Shah 75,Python Flask MongoDB developer 2 years Docker AWS B.Tech,150,76,12
+76,Arjun Reddy 76,Java Spring Boot developer 5 years MySQL Microservices B.Tech,102,80,19
+77,Sunita Rao 77,Django Python PostgreSQL developer 5 years Redis Celery MCA,159,79,10
+78,Nikhil Bose 78,Python Flask MongoDB developer 4 years Docker AWS B.Tech,172,51,11
+79,Priya Patel 79,Python Data Science 5 years Pandas NumPy Matplotlib B.Tech,87,84,15
+80,Arjun Reddy 80,Django REST API Python developer 7 years MySQL HTML CSS B.Tech,58,97,9
+81,Kavya Iyer 81,Java Spring Boot developer 2 years MySQL Microservices B.Tech,5,74,16
+82,Arjun Reddy 82,Java Python developer 2 years SQL Docker Kubernetes AWS M.Tech,115,57,15
+83,Divya Krishnan 83,React JavaScript frontend developer 3 years HTML CSS M.Tech,115,58,17
+84,Pooja Nair 84,Python Data Science 4 years Pandas NumPy Matplotlib B.Tech,14,83,19
+85,Ritika Bansal 85,Django REST API Python developer 8 years MySQL HTML CSS B.Tech,58,88,18
+86,Mohammed Ali 86,Django Python PostgreSQL developer 8 years Redis Celery MCA,71,87,10
+87,Suresh Menon 87,React JavaScript frontend developer 4 years HTML CSS M.Tech,5,94,18
+88,Nikhil Bose 88,Java Spring Boot developer 1 years MySQL Microservices B.Tech,8,82,9
+89,Ananya Das 89,React JavaScript frontend developer 1 years HTML CSS M.Tech,31,70,9
+90,Anjali Mehta 90,Python Data Science 2 years Pandas NumPy Matplotlib B.Tech,160,71,6
+91,Kavya Iyer 91,Django Python PostgreSQL developer 7 years Redis Celery MCA,177,64,15
+92,Arjun Reddy 92,Python Django REST API developer 1 years SQL PostgreSQL B.Tech,92,100,11
+93,Suresh Menon 93,JavaScript React Node.js developer 8 years MongoDB B.Sc,63,60,5
+94,Pooja Nair 94,Django Python PostgreSQL developer 7 years Redis Celery MCA,43,96,20
+95,Amit Kumar 95,Python Django REST API developer 7 years SQL PostgreSQL B.Tech,12,46,2
+96,Suresh Menon 96,Machine Learning engineer 3 years Python TensorFlow Pandas BCA,28,53,10
+97,Vikram Singh 97,Machine Learning engineer 3 years Python TensorFlow Pandas BCA,24,59,5
+98,Priya Patel 98,Django REST API Python developer 2 years MySQL HTML CSS B.Tech,132,61,12
+99,Divya Krishnan 99,Java Python developer 1 years SQL Docker Kubernetes AWS M.Tech,72,65,12
+100,Arjun Reddy 100,Django Python PostgreSQL developer 7 years Redis Celery MCA,108,81,14
+101,Ritika Bansal 101,Java Python developer 8 years SQL Docker Kubernetes AWS M.Tech,106,89,1
+102,Divya Krishnan 102,Java Spring Boot developer 5 years MySQL Microservices B.Tech,31,62,11
+103,Suresh Menon 103,Django Python PostgreSQL developer 6 years Redis Celery MCA,167,88,16
+104,Suresh Menon 104,JavaScript React Node.js developer 4 years MongoDB B.Sc,158,91,10
+105,Sunita Rao 105,Java Python developer 1 years SQL Docker Kubernetes AWS M.Tech,155,61,14
+106,Arjun Reddy 106,Java Spring Boot developer 4 years MySQL Microservices B.Tech,94,74,15
+107,Divya Krishnan 107,Java Python developer 2 years SQL Docker Kubernetes AWS M.Tech,27,73,1
+108,Kavya Iyer 108,React JavaScript frontend developer 4 years HTML CSS M.Tech,5,62,1
+109,Vikram Singh 109,Java Python developer 2 years SQL Docker Kubernetes AWS M.Tech,130,65,17
+110,Deepak Verma 110,Django REST API Python developer 3 years MySQL HTML CSS B.Tech,144,72,16
+111,Amit Kumar 111,Java Python developer 8 years SQL Docker Kubernetes AWS M.Tech,145,47,3
+112,Deepak Verma 112,Python Django REST API developer 7 years SQL PostgreSQL B.Tech,119,99,1
+113,Sunita Rao 113,Python Django REST API developer 2 years SQL PostgreSQL B.Tech,1,89,9
+114,Arjun Reddy 114,Python Django REST API developer 2 years SQL PostgreSQL B.Tech,122,82,2
+115,Shreya Shah 115,Python Data Science 4 years Pandas NumPy Matplotlib B.Tech,163,45,5
+116,Nikhil Bose 116,Python Flask MongoDB developer 2 years Docker AWS B.Tech,50,50,9
+117,Sunita Rao 117,Java Spring Boot developer 2 years MySQL Microservices B.Tech,146,62,5
+118,Ritika Bansal 118,Machine Learning engineer 1 years Python TensorFlow Pandas BCA,87,80,17
+119,Priya Patel 119,React JavaScript frontend developer 1 years HTML CSS M.Tech,106,41,1
+120,Deepak Verma 120,React JavaScript frontend developer 3 years HTML CSS M.Tech,54,77,12
+121,Rohan Joshi 121,Python Django REST API developer 1 years SQL PostgreSQL B.Tech,84,49,4
+122,Priya Patel 122,Java Spring Boot developer 6 years MySQL Microservices B.Tech,60,71,13
+123,Rohan Joshi 123,Java Spring Boot developer 7 years MySQL Microservices B.Tech,138,76,7
+124,Sneha Gupta 124,JavaScript React Node.js developer 2 years MongoDB B.Sc,61,79,16
+125,Ritika Bansal 125,JavaScript React Node.js developer 1 years MongoDB B.Sc,111,99,13
+126,Deepak Verma 126,Django Python PostgreSQL developer 7 years Redis Celery MCA,79,98,17
+127,Mohammed Ali 127,Django Python PostgreSQL developer 7 years Redis Celery MCA,94,67,18
+128,Rahul Sharma 128,React JavaScript frontend developer 4 years HTML CSS M.Tech,25,89,20
+129,Deepak Verma 129,Java Python developer 5 years SQL Docker Kubernetes AWS M.Tech,79,69,20
+130,Mohammed Ali 130,Java Python developer 5 years SQL Docker Kubernetes AWS M.Tech,17,42,8
+131,Sneha Gupta 131,Python Django REST API developer 6 years SQL PostgreSQL B.Tech,59,51,11
+132,Rahul Sharma 132,Java Spring Boot developer 4 years MySQL Microservices B.Tech,56,71,3
+133,Priya Patel 133,Java Spring Boot developer 5 years MySQL Microservices B.Tech,102,94,6
+134,Sneha Gupta 134,React JavaScript frontend developer 2 years HTML CSS M.Tech,176,72,4
+135,Vikram Singh 135,JavaScript React Node.js developer 4 years MongoDB B.Sc,92,91,4
+136,Kavya Iyer 136,Machine Learning engineer 2 years Python TensorFlow Pandas BCA,61,80,2
+137,Pooja Nair 137,Django Python PostgreSQL developer 6 years Redis Celery MCA,102,80,11
+138,Vikram Singh 138,Django Python PostgreSQL developer 4 years Redis Celery MCA,18,55,6
+139,Nikhil Bose 139,Python Data Science 8 years Pandas NumPy Matplotlib B.Tech,166,52,9
+140,Divya Krishnan 140,React JavaScript frontend developer 5 years HTML CSS M.Tech,30,51,11
+141,Rohan Joshi 141,Java Python developer 3 years SQL Docker Kubernetes AWS M.Tech,73,92,11
+142,Karan Malhotra 142,Django Python PostgreSQL developer 8 years Redis Celery MCA,29,65,3
+143,Kavya Iyer 143,React JavaScript frontend developer 4 years HTML CSS M.Tech,73,95,12
+144,Rahul Sharma 144,Java Spring Boot developer 5 years MySQL Microservices B.Tech,92,51,7
+145,Shreya Shah 145,Django Python PostgreSQL developer 3 years Redis Celery MCA,54,51,14
+146,Kavya Iyer 146,Python Data Science 1 years Pandas NumPy Matplotlib B.Tech,144,78,5
+147,Shreya Shah 147,JavaScript React Node.js developer 2 years MongoDB B.Sc,43,53,18
+148,Ananya Das 148,Python Data Science 2 years Pandas NumPy Matplotlib B.Tech,58,78,3
+149,Ananya Das 149,Python Flask MongoDB developer 5 years Docker AWS B.Tech,113,53,18
+150,Amit Kumar 150,JavaScript React Node.js developer 2 years MongoDB B.Sc,97,81,6
