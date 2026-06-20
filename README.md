@@ -1,5 +1,10 @@
 # 🇮🇳 India Runs — AI Candidate Ranker
 
+## 🌐 Live Demo
+**Try it now:** [india-runs-candidate-ranker.onrender.com](https://india-runs-candidate-ranker.onrender.com/)
+
+*Note: Free tier hosting — first request may take 30-60 seconds to wake up.*
+
 > An AI-powered candidate ranking system built for the **India Runs Hackathon 2026** by Redrob AI.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square)
