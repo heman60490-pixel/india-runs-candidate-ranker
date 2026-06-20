@@ -74,10 +74,7 @@ EDUCATION_LEVELS = {
 # ================================
 
 def normalize_hinglish(text):
-    """
-    Hinglish text ko normalize karo
-    Taaki skills detect ho sakein
-    """
+    """Hinglish text ko normalize karo taaki skills detect ho sakein"""
     text_lower = text.lower()
 
     replacements = {
@@ -113,10 +110,7 @@ def normalize_hinglish(text):
 # ================================
 
 def extract_skills(text):
-    """
-    Text mein se skills nikalo
-    English + Hinglish dono handle karta hai
-    """
+    """Text mein se skills nikalo — English + Hinglish dono"""
     normalized = normalize_hinglish(text)
     return set(s for s in SKILLS_LIST if s in normalized)
 
@@ -125,7 +119,6 @@ def extract_skills_weighted(jd_text):
     JD mein se required aur optional skills alag detect karo
     Required = 1.0, Nice to have = 0.5
     """
-    # Hinglish normalize karo pehle
     normalized_jd = normalize_hinglish(jd_text)
 
     required_patterns = [
@@ -170,8 +163,8 @@ def skills_score(jd_text, resume_text):
 
 def skills_score_weighted(jd_text, resume_text):
     """
-    Weighted skills score
-    Required skills zyada important hain
+    Weighted skills score with REQUIRED SKILL PENALTY
+    Agar koi required skill missing hai — extra penalty lagao
     """
     weighted_jd_skills = extract_skills_weighted(jd_text)
     if not weighted_jd_skills:
@@ -181,22 +174,34 @@ def skills_score_weighted(jd_text, resume_text):
     total_weight = sum(weighted_jd_skills.values())
     matched_weight = 0.0
 
+    required_skills = [s for s, w in weighted_jd_skills.items() if w == 1.0]
+    required_missing = 0
+
     for skill, weight in weighted_jd_skills.items():
         if skill in resume_skills:
             matched_weight += weight
+        else:
+            if weight == 1.0:
+                required_missing += 1
 
-    return round(matched_weight / total_weight, 4) if total_weight > 0 else 0.0
+    base_score = matched_weight / total_weight if total_weight > 0 else 0.0
+
+    # PENALTY: Har missing required skill pe 15% penalty
+    if required_skills:
+        missing_ratio = required_missing / len(required_skills)
+        penalty = missing_ratio * 0.15
+        final_score = max(0, base_score - penalty)
+    else:
+        final_score = base_score
+
+    return round(final_score, 4)
 
 # ================================
 # EXPERIENCE FUNCTIONS
 # ================================
 
 def experience_score(resume_text, required_years=2):
-    """
-    Resume mein se experience nikalo
-    English + Hinglish dono support karta hai
-    3 year, 3 saal, 3 varsh — sab detect hoga
-    """
+    """Resume mein se experience nikalo — English + Hinglish"""
     text_lower = resume_text.lower()
     all_years = []
 
@@ -214,10 +219,7 @@ def experience_score(resume_text, required_years=2):
 # ================================
 
 def detect_education(resume_text):
-    """
-    Resume mein se education level detect karo
-    PhD > Masters > Bachelors > Diploma
-    """
+    """Education level detect karo"""
     text_lower = resume_text.lower()
     scores = {
         'phd': 1.0,
@@ -237,8 +239,7 @@ def detect_education(resume_text):
 def detect_career_gaps(resume_text):
     """Career gaps detect karo"""
     text_lower = resume_text.lower()
-    gap_keywords = ['gap', 'break', 'career break',
-                   'sabbatical', 'unemployed']
+    gap_keywords = ['gap', 'break', 'career break', 'sabbatical', 'unemployed']
     has_gap = any(kw in text_lower for kw in gap_keywords)
     return 0.6 if has_gap else 1.0
 
@@ -311,9 +312,7 @@ def behavioral_score(row):
 def india_bonus(resume_text):
     """Indian certifications ka bonus"""
     text_lower = resume_text.lower()
-    bonus = sum(
-        0.05 for cert in INDIAN_CERTS if cert in text_lower
-    )
+    bonus = sum(0.05 for cert in INDIAN_CERTS if cert in text_lower)
     return min(bonus, 0.10)
 
 # ================================
@@ -386,25 +385,17 @@ def explain_ranking(jd_text, resume_text, score):
 # SCALABILITY — BATCH PROCESSING
 # ================================
 
-def rank_candidates_batch(job_description, candidates_df,
-                          batch_size=100):
-    """
-    Large datasets ke liye batch processing
-    1000+ candidates bhi fast chalega
-    """
+def rank_candidates_batch(job_description, candidates_df, batch_size=100):
+    """Large datasets ke liye batch processing"""
     all_embeddings = []
     resume_texts = candidates_df['resume_text'].fillna('').tolist()
     total = len(resume_texts)
 
     print(f"🔄 {total} candidates — batch processing shuru...")
 
-    # Batch mein embeddings banao
     for i in range(0, total, batch_size):
         batch = resume_texts[i:i + batch_size]
-        batch_embeddings = model.encode(
-            batch,
-            show_progress_bar=False
-        )
+        batch_embeddings = model.encode(batch, show_progress_bar=False)
         all_embeddings.extend(batch_embeddings)
         print(f"   ✅ {min(i+batch_size, total)}/{total} processed")
 
@@ -415,64 +406,45 @@ def rank_candidates_batch(job_description, candidates_df,
 # ================================
 
 def rank_candidates(job_description, candidates_df):
-    """
-    Main function — JD aur candidates ka dataframe lo
-    Ranked dataframe wapas do
-    Large datasets ke liye batch processing use karta hai
-    """
+    """Main function — JD aur candidates ka dataframe lo, ranked dataframe wapas do"""
     jd_analysis = parse_jd(job_description)
     print(f"📋 JD Analysis: {jd_analysis}")
 
     total = len(candidates_df)
     print(f"🔄 {total} candidates process ho rahe hain...")
 
-    # Step 1: JD embedding
     jd_embedding = model.encode([job_description])
 
-    # Step 2: Resume embeddings — batch processing
     if total > 50:
-        # Large dataset — batch mein process karo
-        resume_embeddings = rank_candidates_batch(
-            job_description, candidates_df
-        )
+        resume_embeddings = rank_candidates_batch(job_description, candidates_df)
         import numpy as np
         resume_embeddings = np.array(resume_embeddings)
     else:
-        # Small dataset — seedha process karo
         resume_texts = candidates_df['resume_text'].fillna('').tolist()
         resume_embeddings = model.encode(resume_texts)
 
-    # Step 3: Semantic similarity
-    semantic_scores = cosine_similarity(
-        jd_embedding, resume_embeddings
-    )[0]
+    semantic_scores = cosine_similarity(jd_embedding, resume_embeddings)[0]
 
-    # Step 4: Weighted skills score
     skill_scores = candidates_df['resume_text'].apply(
         lambda r: skills_score_weighted(job_description, str(r))
     )
 
-    # Step 5: Experience score — Hinglish support
     exp_scores = candidates_df['resume_text'].apply(
         lambda r: experience_score(str(r))
     )
 
-    # Step 6: Behavioral score
     behavioral_scores = candidates_df.apply(
         lambda row: behavioral_score(row), axis=1
     )
 
-    # Step 7: Career metadata score
     career_scores = candidates_df['resume_text'].apply(
         lambda r: career_metadata_score(str(r))
     )
 
-    # Step 8: India bonus
     bonus_scores = candidates_df['resume_text'].apply(
         lambda r: india_bonus(str(r))
     )
 
-    # Step 9: Final weighted score
     candidates_df = candidates_df.copy()
     candidates_df['semantic_score']   = semantic_scores.round(4)
     candidates_df['skills_score']     = skill_scores.round(4)
@@ -483,29 +455,22 @@ def rank_candidates(job_description, candidates_df):
     candidates_df['final_score'] = (
         semantic_scores   * 0.35 +
         skill_scores      * 0.25 +
-        exp_scores        * 0.15 +
+        exp_scores         * 0.15 +
         behavioral_scores * 0.15 +
-        career_scores     * 0.10
+        career_scores      * 0.10
     ).round(4)
 
-    # India bonus add karo
     candidates_df['final_score'] = (
         candidates_df['final_score'] + bonus_scores
     ).round(4)
 
-    # Step 10: Explanation
     candidates_df['explanation'] = candidates_df.apply(
         lambda row: explain_ranking(
-            job_description,
-            str(row['resume_text']),
-            row['final_score']
+            job_description, str(row['resume_text']), row['final_score']
         ), axis=1
     )
 
-    # Step 11: Sort aur rank
-    ranked = candidates_df.sort_values(
-        'final_score', ascending=False
-    ).reset_index(drop=True)
+    ranked = candidates_df.sort_values('final_score', ascending=False).reset_index(drop=True)
     ranked['rank'] = range(1, len(ranked) + 1)
 
     print(f"✅ Ranking complete! Top: {ranked.iloc[0]['final_score']}")
