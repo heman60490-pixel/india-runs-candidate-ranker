@@ -292,4 +292,22 @@ Tested with **150 synthetic candidates** to verify batch processing performance:
 
 ---
 
+## ⚠️ Note on Performance
+
+This demo is hosted on Render's free tier (512MB RAM), 
+which has two limitations:
+
+1. **Cold start**: If inactive for 15+ minutes, the first 
+   request takes 30-60 seconds to wake up the server.
+
+2. **Slower inference**: Due to limited RAM, the BERT model 
+   inference is slower than on standard hardware (20-30s 
+   vs 5-10s locally).
+
+**This is a hosting limitation, not a code limitation.** 
+The system has been tested locally with 150 candidates 
+in under 10 seconds (see Scalability Test section above). 
+On production-grade infrastructure (4GB+ RAM), 
+performance would match local benchmarks.
+
 Built with ❤️ for India Runs Hackathon 2026
