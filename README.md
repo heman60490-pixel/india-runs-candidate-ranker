@@ -1,5 +1,8 @@
 # 🇮🇳 India Runs — AI Candidate Ranker
 
+## 🎥 Demo Video
+[▶️ Watch Live Demo](https://youtu.be/zacFJfqlO9Q)
+
 ## 🌐 Live Demo
 **Try it now:** [india-runs-candidate-ranker.onrender.com](https://india-runs-candidate-ranker.onrender.com/)
 
