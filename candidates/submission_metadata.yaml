@@ -4,36 +4,29 @@
 # Copy this file to your repo root as submission_metadata.yaml
 # ─────────────────────────────────────────────
 
-team_name: "YOUR_TEAM_NAME"                     # same as Team ID from intro session
-primary_contact_name: "YOUR_FULL_NAME"
-primary_contact_email: "your@email.com"
-primary_contact_phone: "+91-XXXXXXXXXX"
-
+team_name: "Heman"                     
+primary_contact_name: "Heman"
+primary_contact_email: "heman60490@gmail.com"
 github_repository_url: "https://github.com/heman60490-pixel/india-runs-candidate-ranker"
-
-# Sandbox link — REQUIRED (HuggingFace Spaces / Streamlit Cloud / Colab)
-sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/india-runs-ranker"
+sandbox_link:  "https://india-runs-candidate-ranker.onrender.com/"
 
 # AI tools used — be honest, it's not penalised
 ai_tools_declared:
   - Claude
-  - ChatGPT        # remove if not used
 
 compute_environment: "Windows 11, Python 3.10, 16GB RAM, CPU only"
-
 team_members:
-  - name: "YOUR_NAME"
-    email: "your@email.com"
-  # Add more members if any:
-  # - name: "TEAMMATE_NAME"
-  #   email: "teammate@email.com"
+  - name: "Heman"
+    email: "heman60490@gmail.com"
 
-# Optional but STRONGLY recommended — helps at Stage 4
 methodology_summary: >
   We use a multi-signal ranking pipeline combining semantic similarity
   (all-MiniLM-L6-v2 BERT embeddings, 35% weight), weighted skill overlap
   with required/optional skill distinction (30%), years of experience (15%),
-  behavioural signals from redrob_signals object (15%), and location bonus (5%).
-  Honeypot candidates are filtered pre-ranking using profile consistency checks.
-  The ranking step runs entirely on CPU in under 5 minutes via batch encoding
-  (batch_size=512). No external API calls are made during ranking.
+  behavioural signals from redrob_signals object (20%), and location/product
+  company/notice period bonuses. Honeypot candidates are filtered pre-ranking
+  using profile consistency checks (impossible profiles, keyword stuffers,
+  non-tech titles with AI keywords). The ranking step runs entirely on CPU
+  via batch encoding (batch_size=512). No external API calls are made during
+  ranking. JD-specific signals used: consulting firm penalty, product company
+  bonus, notice period scoring.
