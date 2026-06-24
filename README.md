@@ -221,6 +221,38 @@ Open `http://127.0.0.1:8000` in browser.
 
 ---
 
+## 🚀 Reproduce Submission (Single Command)
+
+```bash
+python rank.py --candidates ./candidates.jsonl --out ./submission.csv
+```
+
+For gzipped dataset:
+```bash
+python rank.py --candidates ./candidates.jsonl.gz --out ./submission.csv
+```
+
+**Output:** `submission.csv` — exactly 100 rows, columns: `candidate_id, rank, score, reasoning`
+
+---
+
+## ✅ Validate Before Submitting
+
+```bash
+python validate_submission.py --submission ./submission.csv --candidates ./candidates.jsonl
+```
+
+---
+
+## 🛡️ Compute Constraints
+
+| Constraint | Limit | Our System |
+|---|---|---|
+| Runtime | ≤ 5 min | ~3-4 min |
+| Memory | ≤ 16 GB | ~4-6 GB peak |
+| Compute | CPU only | ✅ No GPU |
+| Network | Off | ✅ No API calls |
+
 ## 📊 Features
 
 | Feature | Description |
