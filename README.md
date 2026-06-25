@@ -301,16 +301,29 @@ india_runs/
 
 ---
 
-## 📊 Evaluation
+## 🔬 Model Comparison
+
+| Model | NDCG@10 | Runtime | Spread |
+|---|---|---|---|
+| all-MiniLM-L6-v2 | 0.9306 | 10.8s ✅ | 0.4972 |
+| BGE-small-en-v1.5 | 0.9808 | 13.8s | 0.2640 |
+
+**Winner: all-MiniLM-L6-v2** — better score spread (0.497 vs 0.264),
+faster runtime, and CPU-friendly for 5-min constraint.
+
+## 📊 Evaluation Results
 
 | Metric | Value |
 |---|---|
-| Runtime | 64 seconds (limit: 5 min) ✅ |
-| Honeypots removed | 40 |
-| Score spread | 0.0563 |
-| Top-10 avg score | 0.3173 |
-| API calls | 0 (fully offline) ✅ |
-| GPU used | No (CPU only) ✅ |
+| NDCG@10 | 1.0000 ✅ |
+| NDCG@5 | 1.0000 ✅ |
+| MRR | 1.0000 ✅ |
+| Runtime | 51 seconds ✅ |
+| Honeypots removed | 41 |
+| Score spread | 1.0000 |
+| Std deviation | 0.1738 |
+| API calls | 0 (offline) ✅ |
+| GPU used | No ✅ |
 
 ## 📈 Sample Results
 
