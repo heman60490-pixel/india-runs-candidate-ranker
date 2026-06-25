@@ -20,13 +20,12 @@ team_members:
     email: "heman60490@gmail.com"
 
 methodology_summary: >
-  We use a multi-signal ranking pipeline combining semantic similarity
-  (all-MiniLM-L6-v2 BERT embeddings, 35% weight), weighted skill overlap
-  with required/optional skill distinction (30%), years of experience (15%),
-  behavioural signals from redrob_signals object (20%), and location/product
-  company/notice period bonuses. Honeypot candidates are filtered pre-ranking
-  using profile consistency checks (impossible profiles, keyword stuffers,
-  non-tech titles with AI keywords). The ranking step runs entirely on CPU
-  via batch encoding (batch_size=512). No external API calls are made during
-  ranking. JD-specific signals used: consulting firm penalty, product company
-  bonus, notice period scoring.
+  Two-stage ranking pipeline: TF-IDF pre-filter (7.5s) reduces 99,959 
+  candidates to top 5,000, then BERT (all-MiniLM-L6-v2) semantic encoding 
+  (44s). Multi-signal scoring: Semantic 35%, Skills 30%, Experience 15%, 
+  Behavioral 20%, with JD-specific bonuses (product company +0.08, 
+  location +0.08, notice period +0.10) and consulting firm penalty (-0.35). 
+  7-rule honeypot detection removes 41 impossible profiles (keyword stuffers, 
+  non-tech titles with AI keywords, impossible durations, bot behavior). 
+  Scores normalized 0-1 for better spread. NDCG@10: 0.6511, std dev: 0.1738, 
+  runtime: 51 seconds. No GPU, no API calls, fully offline.
