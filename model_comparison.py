@@ -26,7 +26,6 @@ Experience: 5-9 years, product company preferred
 MODELS = [
     ("all-MiniLM-L6-v2",   "MiniLM L6  — Fast, CPU-friendly, 384-dim"),
     ("BAAI/bge-small-en-v1.5", "BGE Small  — Strong retrieval, 384-dim"),
-    ("intfloat/e5-small-v2",   "E5 Small   — Instruction-tuned, 384-dim"),
 ]
 
 SAMPLE_SIZE = 500  # Use 500 candidates for fast comparison
