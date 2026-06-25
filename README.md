@@ -301,6 +301,17 @@ india_runs/
 
 ---
 
+## 📊 Evaluation
+
+| Metric | Value |
+|---|---|
+| Runtime | 64 seconds (limit: 5 min) ✅ |
+| Honeypots removed | 40 |
+| Score spread | 0.0563 |
+| Top-10 avg score | 0.3173 |
+| API calls | 0 (fully offline) ✅ |
+| GPU used | No (CPU only) ✅ |
+
 ## 📈 Sample Results
 
 | Rank | Candidate | Final Score | Signals | Explanation |
