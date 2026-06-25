@@ -271,34 +271,26 @@ python validate_submission.py --submission ./submission.csv --candidates ./candi
 ---
 
 ## 📁 Project Structure
+
 india_runs/
-
 ├── candidates/
-
-│   ├── ai_engine.py        ← Core AI ranking logic
-
+│   ├── ai_engine.py        ← Django web app AI logic
 │   ├── views.py            ← Request handling
-
 │   ├── urls.py             ← URL routing
-
 │   └── templates/
-
 │       ├── index.html      ← JD input form
-
 │       └── results.html    ← Ranked results display
-
 ├── data/
-
-│   ├── candidates.csv      ← Candidate dataset
-
-│   └── ranked_output.csv   ← Generated ranked output
-
-├── manage.py
-
+│   └── candidates.csv      ← Sample dataset for web UI
+├── rank.py                 ← Main submission script ⭐
+├── evaluate.py             ← NDCG/MRR evaluation script
+├── model_comparison.py     ← MiniLM vs BGE comparison
+├── model_comparison_results.csv ← Comparison results
+├── submission.csv          ← Final ranked output (100 candidates)
+├── submission_metadata.yaml← Hackathon metadata
+├── manage.py               ← Django web interface
 ├── requirements.txt
-
 └── README.md
-
 ---
 
 ## 🔬 Model Comparison
@@ -325,15 +317,19 @@ faster runtime, and CPU-friendly for 5-min constraint.
 | API calls | 0 (offline) ✅ |
 | GPU used | No ✅ |
 
-## 📈 Sample Results
+## 📈 Sample Results (Real Output from 100K Dataset)
 
-| Rank | Candidate | Final Score | Signals | Explanation |
-|---|---|---|---|---|
-| #1 | Priya Singh | 0.915 | Semantic: 0.75, Skills: 1.0, Behavioral: 1.0 | Matched: django, rest api — Strong match |
-| #2 | Ali Khan | 0.901 | Semantic: 0.79, Skills: 1.0, Behavioral: 0.98 | Matched: django, rest api — Strong match |
-| #3 | Ravi Sharma | 0.423 | Semantic: 0.26, Skills: 0.0, Behavioral: 0.86 | Missing: django — Moderate match |
-| #4 | Sara Ahmed | 0.374 | Semantic: 0.32, Skills: 0.0, Behavioral: 0.47 | Missing: django — Weak match |
-| #5 | John Doe | 0.301 | Semantic: 0.27, Skills: 0.0, Behavioral: 0.20 | Missing: django, rest api — Weak match |
+| Rank | Candidate ID | Score | Key Skills Matched |
+|---|---|---|---|
+| #1 | CAND_0075439 | 1.0000 | elasticsearch, embeddings, information retrieval |
+| #2 | CAND_0072660 | 0.6720 | elasticsearch, faiss, information retrieval |
+| #3 | CAND_0036437 | 0.6394 | elasticsearch, faiss, milvus |
+| #4 | CAND_0007719 | 0.6216 | embeddings, faiss, information retrieval |
+| #5 | CAND_0006285 | 0.6003 | embeddings, information retrieval, pinecone |
+
+> All top candidates have core required skills:
+> vector databases (FAISS/Elasticsearch/Milvus) +
+> embeddings + information retrieval
 
 ---
 
