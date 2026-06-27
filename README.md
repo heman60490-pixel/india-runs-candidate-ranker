@@ -335,6 +335,13 @@ faster runtime, and CPU-friendly for 5-min constraint.
 
 ---
 
+## ✅ Validation
+
+```bash
+python validate_submission.py submission.csv
+# Output: Submission is valid.
+```
+
 ## ⚡ Scalability Test
 
 Tested with **150 synthetic candidates** to verify batch processing performance:
