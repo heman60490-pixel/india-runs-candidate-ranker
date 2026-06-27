@@ -272,25 +272,27 @@ python validate_submission.py --submission ./submission.csv --candidates ./candi
 
 ## 📁 Project Structure
 
+```
 india_runs/
-├── candidates/
-│   ├── ai_engine.py        ← Django web app AI logic
-│   ├── views.py            ← Request handling
-│   ├── urls.py             ← URL routing
-│   └── templates/
-│       ├── index.html      ← JD input form
-│       └── results.html    ← Ranked results display
-├── data/
-│   └── candidates.csv      ← Sample dataset for web UI
-├── rank.py                 ← Main submission script ⭐
-├── evaluate.py             ← NDCG/MRR evaluation script
-├── model_comparison.py     ← MiniLM vs BGE comparison
+├── rank.py                      ← Main submission script ⭐
+├── evaluate.py                  ← NDCG/MRR evaluation
+├── model_comparison.py          ← MiniLM vs BGE comparison
 ├── model_comparison_results.csv ← Comparison results
-├── submission.csv          ← Final ranked output (100 candidates)
-├── submission_metadata.yaml← Hackathon metadata
-├── manage.py               ← Django web interface
+├── submission.csv               ← Final ranked output (100)
+├── submission_metadata.yaml     ← Hackathon metadata
+├── manage.py                    ← Django web interface
 ├── requirements.txt
-└── README.md
+├── README.md
+├── candidates/
+│   ├── ai_engine.py             ← Django web app AI logic
+│   ├── views.py                 ← Request handling
+│   ├── urls.py                  ← URL routing
+│   └── templates/
+│       ├── index.html           ← JD input form
+│       └── results.html         ← Ranked results display
+└── data/
+    └── candidates.csv           ← Sample dataset for web UI
+```
 ---
 
 ## 🔬 Model Comparison
