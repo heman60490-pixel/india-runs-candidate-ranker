@@ -388,3 +388,6 @@ TF-IDF pre-filtering improves semantic precision by focusing
 BERT on the most relevant candidates first.
 
 Built with ❤️ for India Runs Hackathon 2026
+
+---
+*Last reviewed: 27-Jun-2026*
